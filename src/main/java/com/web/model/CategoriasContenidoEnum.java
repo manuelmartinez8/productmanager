@@ -1,0 +1,7 @@
+package com.web.model;
+
+public enum CategoriasContenidoEnum {
+
+	
+	DOCUMENTACION, HIBERNATE,GIT,JAVA,JPA,MYSQL,SPRING, SPRINGBOOT, SCRUM,JSF,UML, WEBSERVICE, PATRON_DE_DISENIOO ;
+}
