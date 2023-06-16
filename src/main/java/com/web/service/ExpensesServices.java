@@ -13,7 +13,7 @@ import com.web.repository.GastosRepository;
 
 
 @Service
-public class GastosService implements IGastosService {
+public class ExpensesServices implements IExpensesServices {
 	
 	private GastosRepository repository;
 	private GastosConverter converter= new GastosConverter();
@@ -26,7 +26,6 @@ public class GastosService implements IGastosService {
 	@Override
 	public List<Gastos> getAllGastos() {
 		 List<Gastos>list=new ArrayList<Gastos>();
-		 
 		 try {
 			list=this.converter.convertirGastos(repository.findAll());
 		} catch (Exception e) {

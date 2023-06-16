@@ -9,7 +9,7 @@ import com.web.model.Gastos;
 import com.web.model.GastosEnum;
  
 
-public interface IGastosService {
+public interface IExpensesServices {
 	
 	List<Gastos> getAllGastos();
 	public void guardar(EGastos e);

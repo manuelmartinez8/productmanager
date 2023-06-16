@@ -1,8 +1,8 @@
 package com.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,26 +12,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.web.entity.EGastos;
 
-import com.web.model.CategoriasProductosEnum;
 import com.web.model.Gastos;
 import com.web.model.GastosEnum;
-import com.web.model.Product;
-import com.web.service.IGastosService;
+import com.web.service.IExpensesServices;
 
+@Tag(name = "Expenses", description = "Expenses management APIs")
 @Controller
 @RequestMapping("/views/")
-public class GastosController {
+public class ExpensesController {
 	
 	@Autowired
-	IGastosService service;
+	IExpensesServices service;
+
+
+	@RequestMapping("listAllExpenses")
+	public String goToExpensesModule(Model model){
+		model.addAttribute("titulo", "Modulo de Gastos");
+		return "/views/listAllExpenses";
+	}
 	
-	
-	@RequestMapping("listGastos")
-	public String getGastos(Model model) {
+	@RequestMapping("listAllExpensesold")
+	public String getAllExpenses(Model model) {
 		List<Gastos> allGastos = service.getAllGastos();
 		model.addAttribute("titulo", "Los Gastos son");
 		model.addAttribute("listadegastos", allGastos);
-		return "/views/listGastos";
+		return "/views/listAllExpenses";
 	}
 	
 	@GetMapping("ng")
@@ -41,7 +46,7 @@ public class GastosController {
 		model.addAttribute("titulo", "Formulario Nuevo Gasto");
 		model.addAttribute("gasto", g);
 		model.addAttribute("categorias", lc);
-		return "views/frmnuevogasto";
+		return "views/frmnewexpense";
 	}
 	
 	@PostMapping("/savegasto")
@@ -54,7 +59,7 @@ public class GastosController {
 			e.printStackTrace();
 		}
 				
-		return "redirect:/views/listGastos";	
+		return "redirect:/views/listAllExpenses";
 	}
 	
 	

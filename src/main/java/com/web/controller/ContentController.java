@@ -109,6 +109,7 @@ public class ContentController {
 	
 	@GetMapping("/delet/{id}")
 	public String deleteContent(@PathVariable("id") Long idContenido, Model model) {
+		//EVALUAR ESTA EXPRESION if (id.isPresent()) {
 		if(idContenido!=null) {
 			service.delete(idContenido);			
 			System.out.println("CONTENIDO ELIMINADO CON EXITO!!"); 	

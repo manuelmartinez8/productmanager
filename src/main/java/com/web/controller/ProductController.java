@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,7 @@ import com.web.service.ICategoriaService;
 import com.web.service.IProductService;
 import com.web.service.ProductService;
 
+@Tag(name = "Product", description = "Product management APIs")
 @Controller
 @RequestMapping("/views/")
 public class ProductController {
@@ -43,7 +47,11 @@ public class ProductController {
 	@Autowired
 	ICategoriaService categoriaService;
 	private static final Logger log = LoggerFactory.getLogger(ProductController.class);
-	
+
+	@Operation(
+			summary = "Retrieve a list of all product",
+			description = "Get a list of all product  object by specifying.",
+			tags = { "product", "get" })
 	@RequestMapping("listProduct")
 	public String getProducts(Model model) {
 		List<Product> allProduct = service.getAllProduct();
@@ -51,9 +59,12 @@ public class ProductController {
 		model.addAttribute("listadeproductos", allProduct);
 		return "/views/listProduct";
 	}
-	
-	
-	@GetMapping("np")//cambiar este path
+
+	@Operation(
+			summary = "Form to save a new product",
+			description = "Form to save a new product, set title, kind and category.",
+			tags = { "product", "get" })
+	@GetMapping("fnewproduct")//cambiar este path
 	public String nuevoProducto(Model model) {
 		Product p = new Product();
 		List<CategoriasProductosEnum> lc= categoriaService.ListaCategoriasEnum();
@@ -61,26 +72,27 @@ public class ProductController {
 		model.addAttribute("titulo", "Formulario Nuevo Producto");
 		model.addAttribute("producto", p);
 		model.addAttribute("categorias", lc);
-		return "/views/frmnuevoproducto";
+		return "/views/fnewproduct";
 	}
-	
+	@Operation(
+			summary = "Endpoint to save a new product",
+			description = "Endpoint to save a new product, set title, kind and category.",
+			tags = { "product", "post" })
 	@PostMapping("/saveproduct")
-	public String Guardar(@Valid @ModelAttribute EProduct p,
+	public String Guardar(@Valid @ModelAttribute EProduct productoNuevo,
 			BindingResult result, Model model,
 			RedirectAttributes messagesAtributte) {
-		List<CategoriasProductosEnum> lc= categoriaService.ListaCategoriasEnum();
+		List<CategoriasProductosEnum> listaCategorias= categoriaService.ListaCategoriasEnum();
 		//docuemntar esta validacion
 		if(result.hasErrors()) {			
 			model.addAttribute("titulo", "Formulario Nuevo Producto");
-			//model.addAttribute("SUBtitulo", "Formulario Nuevo Producto");
-			model.addAttribute("producto", p);
-			model.addAttribute("categorias", lc);
-			System.out.println("DEBE CARGAR TODOS LOS DATOS!!");//quitar este systemnout
-			
-			return "/views/frmnuevoproducto";
+			model.addAttribute("producto", productoNuevo);
+			model.addAttribute("categorias", listaCategorias);
+			log.error("ESTA VACIO EL OBJETO");
+			return "/views/fnewproduct";
 		}
 		
-		service.guardar(p);
+		service.guardar(productoNuevo);
 		System.out.println("PRODUCTO GUARDADO CON EXITO!!");//quitar este systemnout
 		messagesAtributte.addFlashAttribute("succes", "PRODUCTO GUARDADO CON EXITO");
 		return "redirect:/views/listProduct";
@@ -106,7 +118,7 @@ public class ProductController {
 			System.out.println("ERROR!! EL id del cliente es incorrecto!!!");
 			return "redirect:/views/listProduct";
 		}
-		return "/views/frmnuevoproducto";
+		return "/views/fnewproduct";
 	}
 	
 	@GetMapping("/delete/{id}")
