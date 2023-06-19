@@ -1,7 +1,11 @@
 package org.web.entity;
 
+import com.web.model.Gastos;
+import lombok.*;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +18,11 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="gastos")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class EGastos implements Serializable {
 	
 private static final long serialVersionUID = 1L;
@@ -26,89 +35,27 @@ private static final long serialVersionUID = 1L;
 	private String titulo;
 	@Column(name = "descripcion",   length = 200)
 	private String descripcion;
-	@Column(name = "montobs")
-	private double montobs;
-	@Column(name = "montodivisa")
-	private double montodivisa;
+	@Column(name = "montoeuros")
+	private double montoeuros;
 	@Column(name = "categoria")
 	private String categoria;
-	@Temporal(TemporalType.DATE)
-	private Date fechagastos;	 
-	private String mes;
-	
-	
-	
-	public EGastos() {
-		super();
+	private LocalDate fechagastos;
+
+	public EGastos(Gastos g) {
+		this.titulo = g.getTitulo();
+		this.descripcion = g.getDescripcion();
+		this.montoeuros = g.getMontoeuros();
+		this.categoria = g.getCategoria();
+		this.fechagastos = LocalDate.parse(g.getFechagastos());
 	}
-	
-	public EGastos(Long id, String titulo, String descripcion, double montobs, double montodivisa, String categoria,
-			Date fechagastos, String mes) {
-		super();
-		this.id = id;
-		this.titulo = titulo;
-		this.descripcion = descripcion;
-		this.montobs = montobs;
-		this.montodivisa = montodivisa;
-		this.categoria = categoria;
-		this.fechagastos = fechagastos;
-		this.mes = mes;
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getTitulo() {
-		return titulo;
-	}
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	public double getMontobs() {
-		return montobs;
-	}
-	public void setMontobs(double montobs) {
-		this.montobs = montobs;
-	}
-	public double getMontodivisa() {
-		return montodivisa;
-	}
-	public void setMontodivisa(double montodivisa) {
-		this.montodivisa = montodivisa;
-	}
-	public String getCategoria() {
-		return categoria;
-	}
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
-	}
-	public Date getFechagastos() {
-		return fechagastos;
-	}
-	public void setFechagastos(Date fechagastos) {
-		this.fechagastos = fechagastos;
-	}
-	public String getMes() {
-		return mes;
-	}
-	public void setMes(String mes) {
-		this.mes = mes;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

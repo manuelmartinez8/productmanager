@@ -3,6 +3,10 @@ package com.web.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.web.controller.ProductController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web.converter.GastosConverter;
 import org.web.entity.EGastos;
@@ -18,7 +22,8 @@ public class ExpensesServices implements IExpensesServices {
 	private GastosRepository repository;
 	private GastosConverter converter= new GastosConverter();
 	private GastosEnum enums;
-	
+	private static final Logger log = LoggerFactory.getLogger(ExpensesServices.class);
+	@Autowired
 	public void setGastosRepository(GastosRepository repository) {
 		this.repository=repository;
 	}
@@ -30,6 +35,7 @@ public class ExpensesServices implements IExpensesServices {
 			list=this.converter.convertirGastos(repository.findAll());
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return list;
 	}
@@ -38,8 +44,10 @@ public class ExpensesServices implements IExpensesServices {
 	public void guardar(EGastos e) {		
 		try {
 			repository.save(e);
-		} catch (Exception e2) {
-			e2.printStackTrace();
+			log.info("PROCESO DE GUARDADO DEL NUEVO GASTO TERMINO CON EXITO");
+		} catch (Exception eX) {
+			eX.printStackTrace();
+			log.error(eX.getMessage(), "PROCESO DE GUARDADO DEL NUEVO GASTO NO TERMINO CON EXITO");
 		}
 	}
 
@@ -67,13 +75,14 @@ public class ExpensesServices implements IExpensesServices {
 		list.add(enums.BEBIDA);
 		list.add(enums.CARRO);
 		list.add(enums.COMIDA);
+		list.add(enums.CALZADOS);
 		list.add(enums.DOCUMENTACION);
 		list.add(enums.EMPRENDIMIENTO);
 		list.add(enums.FOODY);
 		list.add(enums.GASTO);
 		list.add(enums.SERVICIOS);
 		list.add(enums.OTRO);
-		
+		list.add(enums.ROPA);
 		return list;
 	}
 

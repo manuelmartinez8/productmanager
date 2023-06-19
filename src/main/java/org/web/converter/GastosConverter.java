@@ -16,9 +16,12 @@ public class GastosConverter {
 		 for(EGastos e: gastos) {
 			 list.add(new Gastos(e));
 		 }
-		
 		return list;
-		
+	}
+
+	public EGastos convertGasto(Gastos g){
+		EGastos eg = new EGastos(g)	;
+		return  eg;
 	}
 
 }

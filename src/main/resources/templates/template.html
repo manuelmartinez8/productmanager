@@ -34,8 +34,16 @@
 						<li class="nav-item"><a class="nav-link" th:href="@{/views/listProduct}">Productos</a></li>
 						<li class="nav-item"><a class="nav-link" th:href="@{/views/listUser}">Manejo de Usuarios</a></li>	
 						<li class="nav-item"><a class="nav-link" th:href="@{/views/listContent}">Contenidos</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/views/listAllExpenses}">Modulo de Gastos</a></li>
-					</ul>					 
+						<li class="nav-item"><a class="nav-link" th:href="@{/views/listAllExpenses}">Listar Gastos</a></li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Modulo de Gastos</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Crear un nuevo Item de gasto</a></li>
+								<li><a class="dropdown-item" th:href="@{/views/newexpense}">Guardar Gastos</a></li>
+								<li><a class="dropdown-item" th:href="@{/views/listAllExpenses}">Listar todos los gastos</a></li>
+							</ul>
+						</li>
+					</ul>
 				</div>
 			</div>			 
 		</nav>

@@ -64,7 +64,7 @@ public class ProductController {
 			summary = "Form to save a new product",
 			description = "Form to save a new product, set title, kind and category.",
 			tags = { "product", "get" })
-	@GetMapping("fnewproduct")//cambiar este path
+	@GetMapping("fnewproduct")
 	public String nuevoProducto(Model model) {
 		Product p = new Product();
 		List<CategoriasProductosEnum> lc= categoriaService.ListaCategoriasEnum();
@@ -74,6 +74,7 @@ public class ProductController {
 		model.addAttribute("categorias", lc);
 		return "/views/fnewproduct";
 	}
+
 	@Operation(
 			summary = "Endpoint to save a new product",
 			description = "Endpoint to save a new product, set title, kind and category.",
