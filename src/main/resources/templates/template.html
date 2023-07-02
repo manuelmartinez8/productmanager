@@ -2,16 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
 <meta charset="UTF-8">
-<title>Spring Boot App</title>
+<title>Personal App</title>
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
 	<!-- Desarrollo originado del canal de  JAVACODE  -->
 	<!-- SpringBoot+Jpa+Thymleaf -->
 	<!-- BARRA DE NAVEGACION -->
-
-
-
 	<header th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		
@@ -23,18 +20,24 @@
 					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				
 				<!-- ENLACES DEL MENU -->
-				
-				
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" th:href="@{/}">Inicio</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/views/listProduct}">Productos</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/views/listProduct}">Producto</a></li>
 						<li class="nav-item"><a class="nav-link" th:href="@{/views/listUser}">Manejo de Usuarios</a></li>	
 						<li class="nav-item"><a class="nav-link" th:href="@{/views/listContent}">Contenidos</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/views/listAllExpenses}">Listar Gastos</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/views/fnewacces}">Gestion de Accesos</a></li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Modulo de Accesos</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Crear un nuevo Item de Accesos</a></li>
+								<li><a class="dropdown-item" th:href="@{/views/fnewacces}">Guardar Nuevo Acceso</a></li>
+								<li><a class="dropdown-item" th:href="@{/views/listAcces}">Listar todos Accesos</a></li>
+								<li><a class="dropdown-item" th:href="@{/views/listAccesos/0}">Paginacion</a></li>
+							</ul>
+						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Modulo de Gastos</a>
 							<ul class="dropdown-menu">
@@ -47,34 +50,26 @@
 				</div>
 			</div>			 
 		</nav>
-		
 		<!-- MENSAJES -->
-		<div class="alert alert-succes alert-dismissable" th:if="${succes != null}">
-		<label th:text="${succes}"></label>
-		<button type="button" class="close" data-dismiss="alert">&time;</button>		
+		<div  style="background-color: #eee;" class="alert alert-succes alert-dismissable w-25 p-3 h-25" th:if="${succes != null}">
+			<label class="text-primary" th:text="${succes}">Succes</label>
+			<!--<button type="button" class="close" data-dismiss="alert"/>-->
 		</div>
 		<div class="alert alert-danger alert-dismissable" th:if="${error != null}">
-		<label th:text="${error}"></label>
-		<button type="button" class="close" data-dismiss="alert">&time;</button>		
+			<label th:text="${error}"></label>
+			<button type="button" class="close" data-dismiss="alert"/>
 		</div>
 		<div class="alert alert-danger alert-dismissable" th:if="${warning != null}">
-		<label th:text="${warning}"></label>
-		<button type="button" class="close" data-dismiss="alert">&time;</button>		
+			<label th:text="${warning}"></label>
+			<button type="button" class="close" data-dismiss="alert"/>
 		</div>
 		<div class="alert alert-info alert-dismissable" th:if="${info != null}">
-		<label th:text="${info}"></label>
-		<button type="button" class="close" data-dismiss="alert">&time;</button>		
+			<label th:text="${info}"></label>
+			<button type="button" class="close" data-dismiss="alert"/>
 		</div>
-		
-	</header>
-
-
-
-
-	<!-- CONTENIDO -->
+        </header>
+        <!-- CONTENIDO -->
 	<div class="container"></div>
-
-
 
 	<!-- PIE DE PAGINA -->
 	<footer th:fragment="footer" class="bg-dark text-center text-white fixed-bottom">

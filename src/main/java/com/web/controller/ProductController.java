@@ -1,23 +1,21 @@
 package com.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import io.swagger.annotations.Api;
+
+import com.web.util.ConstantsUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,15 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.web.converter.ProductConverter;
 import org.web.entity.EProduct;
 
-import com.web.model.Categoria;
 import com.web.model.CategoriasProductosEnum;
 import com.web.model.Product;
 import com.web.service.ICategoriaService;
 import com.web.service.IProductService;
-import com.web.service.ProductService;
 
 @Tag(name = "Product", description = "Product management APIs")
 @Controller
@@ -43,11 +38,11 @@ import com.web.service.ProductService;
 public class ProductController {
 	
 	@Autowired
-	IProductService service;
+	private IProductService service;
 	@Autowired
-	ICategoriaService categoriaService;
+	private ICategoriaService categoriaService;
 	private static final Logger log = LoggerFactory.getLogger(ProductController.class);
-
+	ConstantsUtil constantsUtil = new ConstantsUtil();
 	@Operation(
 			summary = "Retrieve a list of all product",
 			description = "Get a list of all product  object by specifying.",
@@ -57,7 +52,7 @@ public class ProductController {
 		List<Product> allProduct = service.getAllProduct();
 		model.addAttribute("titulo", "Los Productos");
 		model.addAttribute("listadeproductos", allProduct);
-		return "/views/listProduct";
+		return constantsUtil.VIEW_LISTADO_PRODUCTOS;
 	}
 
 	@Operation(
@@ -66,13 +61,8 @@ public class ProductController {
 			tags = { "product", "get" })
 	@GetMapping("fnewproduct")
 	public String nuevoProducto(Model model) {
-		Product p = new Product();
-		List<CategoriasProductosEnum> lc= categoriaService.ListaCategoriasEnum();
-		p.setId(Long.valueOf(1));
-		model.addAttribute("titulo", "Formulario Nuevo Producto");
-		model.addAttribute("producto", p);
-		model.addAttribute("categorias", lc);
-		return "/views/fnewproduct";
+		buildModel(null, "Formulario Nuevo Producto", model);
+		return constantsUtil.FORMULARIO_NUEVO_PRODUCTO;
 	}
 
 	@Operation(
@@ -85,50 +75,32 @@ public class ProductController {
 			RedirectAttributes messagesAtributte) {
 		List<CategoriasProductosEnum> listaCategorias= categoriaService.ListaCategoriasEnum();
 		//docuemntar esta validacion
-		if(result.hasErrors()) {			
-			model.addAttribute("titulo", "Formulario Nuevo Producto");
-			model.addAttribute("producto", productoNuevo);
-			model.addAttribute("categorias", listaCategorias);
+		if(result.hasErrors()) {
+			buildModel(null,"Formulario Nuevo Producto Con errores", model);
+			messagesAtributte.addAttribute("warning", result.getAllErrors().toString());
+			messagesAtributte.addFlashAttribute("warning", "DEBE RELLENAR TODOS LOS CAMPOS");
 			log.error("ESTA VACIO EL OBJETO");
-			return "/views/fnewproduct";
+			return constantsUtil.FORMULARIO_NUEVO_PRODUCTO;
 		}
-		
 		service.guardar(productoNuevo);
-		System.out.println("PRODUCTO GUARDADO CON EXITO!!");//quitar este systemnout
 		messagesAtributte.addFlashAttribute("succes", "PRODUCTO GUARDADO CON EXITO");
-		return "redirect:/views/listProduct";
+		return constantsUtil.REDIRECT_LISTADO_PRODUCTOS;
 	}
 	
 	@GetMapping("/edit/{id}")
 	public String editProducto(@PathVariable("id") Long idProducto, Model model) {
-		EProduct p = new EProduct();
 		if(idProducto>0) {
-			p=service.findPorID(idProducto);
-			if(idProducto!=null) {
-				List<CategoriasProductosEnum> lc= categoriaService.ListaCategoriasEnum();
-				model.addAttribute("titulo", "Formulario Editar Producto");
-				model.addAttribute("producto", p);
-				model.addAttribute("categorias", lc);	
-			}
-			else {
-				System.out.println("ERROR!! EL id del cliente no existe!!!");
-				return "redirect:/views/listProduct";
-			}
+			buildModel(idProducto,"Formulario Editar Producto", model);
 		}
-		else {
-			System.out.println("ERROR!! EL id del cliente es incorrecto!!!");
-			return "redirect:/views/listProduct";
-		}
-		return "/views/fnewproduct";
+		return constantsUtil.FORMULARIO_NUEVO_PRODUCTO;
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String deleteProducto(@PathVariable("id") Long idProducto, Model model) {
-		if(idProducto!=null) {		//validar primero que el producto exista
-			service.Eliminar(idProducto);			
-			System.out.println("PRODUCTO ELIMINADO CON EXITO!!"); 	
+		if(idProducto!=null) {		//retornar un mensaje acorde si el producto no existe en la BD
+			service.Eliminar(idProducto);
 		}
-		return "redirect:/views/listProduct";
+		return constantsUtil.REDIRECT_LISTADO_PRODUCTOS;
 	}
 	
 	
@@ -172,5 +144,16 @@ public class ProductController {
 	    }
  	    
     }
-
+	private Model buildModel(Long id, String titulo,Model model){
+		EProduct ep = new EProduct();
+		if(id!=null)
+		{
+			ep = service.findPorID(id);
+		}
+		List<CategoriasProductosEnum> lc= categoriaService.ListaCategoriasEnum();
+		model.addAttribute("titulo", titulo);
+		model.addAttribute("producto", ep);
+		model.addAttribute("categorias", lc);
+		return model;
+	}
 }

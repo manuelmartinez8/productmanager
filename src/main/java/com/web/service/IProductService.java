@@ -13,7 +13,6 @@ public interface IProductService {
 
 	List<Product> getAllProduct();
 	public void guardar(EProduct ep);
-	public   Product buscarPorID(Long id);
 	public   EProduct findPorID(Long id);
 	public void Eliminar(Long id);
 

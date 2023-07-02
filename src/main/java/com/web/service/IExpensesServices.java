@@ -13,7 +13,6 @@ public interface IExpensesServices {
 	
 	List<Gastos> getAllGastos();
 	public void guardar(EGastos e);
-	public   Gastos buscarPorID(Long id);
 	public   EGastos findPorID(Long id);
 	public void Eliminar(Long id);
 	List<GastosEnum>ListaGastosEnum(); 

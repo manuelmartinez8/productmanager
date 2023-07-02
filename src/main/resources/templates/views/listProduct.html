@@ -7,14 +7,9 @@
 
 	<div class="container">
 	
-	<a class="btn btn-primary btn-sm" th:href="@{/views/fnewproduct}" th:text="'Nuevo Producto'">
-		
-		</a>
-		<!-- <h1 th:text="${titulo}"></h1> 
-		<p th:text="${listadeproductos}"></p> -->
-
-		<div class="container my-2">
+	<a class="btn btn-primary btn-sm" th:href="@{/views/fnewproduct}" th:text="'Nuevo Producto'"></a>
 			<div class="card">
+				<div class="card-header bg-dark text-white" th:text="${titulo}"></div>
 				<div class="card-body">
 					<div th:switch="${listadeproductos}" class="container my-5">						 
 						<div class="col-md-10">
@@ -47,10 +42,8 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
-		</div>
-
-
 
 	</div>
 	<footer th:replace="template :: footer"></footer>

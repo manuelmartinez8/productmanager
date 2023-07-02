@@ -2,8 +2,9 @@ package com.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import com.web.controller.ProductController;
+import com.web.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,12 @@ import com.web.repository.GastosRepository;
 
 
 @Service
-public class ExpensesServices implements IExpensesServices {
+public class ExpensesServicesImpl implements IExpensesServices {
 	
 	private GastosRepository repository;
 	private GastosConverter converter= new GastosConverter();
 	private GastosEnum enums;
-	private static final Logger log = LoggerFactory.getLogger(ExpensesServices.class);
+	private static final Logger log = LoggerFactory.getLogger(ExpensesServicesImpl.class);
 	@Autowired
 	public void setGastosRepository(GastosRepository repository) {
 		this.repository=repository;
@@ -43,32 +44,34 @@ public class ExpensesServices implements IExpensesServices {
 	@Override
 	public void guardar(EGastos e) {		
 		try {
-			repository.save(e);
-			log.info("PROCESO DE GUARDADO DEL NUEVO GASTO TERMINO CON EXITO");
+			if(Objects.nonNull(e)){
+				repository.save(e);
+				log.info("PROCESO DE GUARDADO DEL NUEVO GASTO TERMINO CON EXITO");
+			}else{
+				log.error("DEBE RELLENAR TODOS LOS CAMPOS");
+			}
 		} catch (Exception eX) {
 			eX.printStackTrace();
 			log.error(eX.getMessage(), "PROCESO DE GUARDADO DEL NUEVO GASTO NO TERMINO CON EXITO");
 		}
 	}
-
-	@Override
-	public Gastos buscarPorID(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public EGastos findPorID(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		EGastos eg = new EGastos();
+		if (id!=null){
+			eg = repository.findById(id)
+					.orElseThrow(() ->new ResourceNotFoundException("El id  no se Encuentra en el Sistema", "id:" + id));
+		}
+		return eg;
 	}
-
 	@Override
 	public void Eliminar(Long id) {
-		// TODO Auto-generated method stub
-
+		  if(id!=null){
+			  EGastos eg = repository.findById(id).orElseThrow(()->new ResourceNotFoundException("Gasto no Encontrado", "id: "+id));
+			  repository.deleteById(id);
+			  log.info("PROCESO DE BORRADO DEL NUEVO GASTO TERMINO CON EXITO");
+		  }
 	}
-
 	@Override
 	public List<GastosEnum> ListaGastosEnum() {
 		List<GastosEnum> list=new ArrayList<GastosEnum>();

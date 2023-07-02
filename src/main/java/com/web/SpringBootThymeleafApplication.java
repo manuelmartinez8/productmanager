@@ -43,7 +43,7 @@ public class SpringBootThymeleafApplication implements CommandLineRunner {
 		Date date = simpleDateFormat.parse("06-10-1981");
 		user.setFechaNacimiento(date);
 		user.setPassword("123");
-		repository.save(user);
+	//	repository.save(user);
 
 		EUser user2 = new EUser();
 		user2.setNombre("Adriana Martinez");
@@ -54,7 +54,7 @@ public class SpringBootThymeleafApplication implements CommandLineRunner {
 		Date date2 = simpleDateFormat.parse("26-06-2015");
 		user2.setFechaNacimiento(date2);
 		user2.setPassword("123");
-		repository.save(user2);
+		//repository.save(user2);
 
 
 	}
