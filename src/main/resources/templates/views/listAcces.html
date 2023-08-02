@@ -36,11 +36,12 @@
 											<td  scope="row"  th:text="${lp.appPassword}"></td>
 											<td  scope="row"  th:text="${lp.appPasswordSecundary}"></td>
 											<td  scope="row"  th:text="${lp.appPreSecreta}"></td>
-											<td><a class="btn btn-success btn-sm" th:href="@{/views/editacces/} + ${lp.id}" th:text="'Editar Registro'"></td>
-											<td><a class="btn btn-danger btn-sm" th:href="@{/views/deleteacces/} + ${lp.id}" th:text="'Eliminar Registro'" onclick="return confirm('Desea Eliminar Registro?')"></td>
+											<td><a class="btn btn-success btn-sm" th:href="@{/views/editacces/} + ${lp.id}" th:text="'Editar Registro'" /></td>
+											<td><a class="btn btn-danger btn-sm" th:href="@{/views/deleteacces/} + ${lp.id}" th:text="'Eliminar Registro'" onclick="return confirm('Desea Eliminar Registro?')" /></td>
 										</tr>
 									</tbody>
 								</table>
+								<nav th:replace="template :: paginatore"></nav>
 							</div>
 
 						</div>

@@ -28,6 +28,7 @@ public class Gastos {
 	private String categoria;
 	@NotEmpty
 	private String fechagastos;
+	private String mes;
 
 	public Gastos(EGastos eg) {
 		this.id =eg.getId();
@@ -36,6 +37,7 @@ public class Gastos {
 		this.montoeuros = eg.getMontoeuros();
 		this.categoria = eg.getCategoria();
 		this.fechagastos = eg.getFechagastos().toString();
+		this.mes = eg.getMes();
 
 	}
 

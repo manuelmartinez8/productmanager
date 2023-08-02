@@ -69,18 +69,20 @@ public class AccesManageController {
        model.addAttribute("listadoaccesos", allAcces);
         return constantsUtil.VIEW_LISTADO_ACCESOS;
     }
-    @GetMapping("listAccesos/{page}")
+//    @GetMapping("/listar/{page}")
+    @GetMapping({"/","listAcces",""})
     public String listarAccesos(@RequestParam(name = "page", defaultValue = "0") int page,
                                 Model model){
-        Pageable pageRequest = PageRequest.of(page,2);
+        Pageable pageRequest = PageRequest.of(page,6);
         Page<EAcceso> accesos = service.findAll(pageRequest);
-        PageRender<EAcceso> pageRender = new PageRender<>("/listar",accesos);
-        model.addAttribute("titulo","Listado de Accesos");
+        PageRender<EAcceso> pageRender = new PageRender<>("views/listAcces",accesos);
+        model.addAttribute("titulo","Listado de Accesos con Paginacion");
         model.addAttribute("listadoaccesos",accesos);
         model.addAttribute("page", pageRender);
 
        // return constantsUtil.REDIRECT_LISTADO_ACCESOS;
-        return constantsUtil.VIEW_LISTADO_ACCESOS;
+//        return constantsUtil.VIEW_LISTADO_ACCESOS;
+        return "views/listAcces";
     }
     @GetMapping("/editacces/{id}")
     public String editAcces(@PathVariable("id")Long idAcces, Model model){

@@ -13,8 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 @Entity
 @Table(name="gastos")
@@ -40,6 +39,7 @@ private static final long serialVersionUID = 1L;
 	@Column(name = "categoria")
 	private String categoria;
 	private LocalDate fechagastos;
+	private String mes;
 
 	public EGastos(Gastos g) {
 		this.titulo = g.getTitulo();
@@ -47,6 +47,7 @@ private static final long serialVersionUID = 1L;
 		this.montoeuros = g.getMontoeuros();
 		this.categoria = g.getCategoria();
 		this.fechagastos = LocalDate.parse(g.getFechagastos());
+		this.mes = g.getMes();
 	}
 }
 	

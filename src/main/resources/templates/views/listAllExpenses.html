@@ -8,6 +8,7 @@
 	<div class="container">
 		<a class="btn btn-primary btn-sm" th:href="@{/views/newexpense}" th:text="'Registrar Nuevo Gasto'"></a>
 
+
 		<div class="card">
 			<div class="card-header bg-dark text-white" th:text="${titulo}"></div>
 
@@ -22,8 +23,9 @@
 						<th scope="col">TITULO</th>
 						<th scope="col">CATEGORIA</th>
 						<th scope="col">DESCRIPCION</th>
-						<th scope="col">FECHA DEL GASTO</th>
-						<th scope="col">MONTO EUROS</th>
+						<th scope="col">MES</th>
+						<th scope="col">FECHA</th>
+						<th scope="col">EUROS</th>
 						<th scope="col">Editar</th>
 						<th scope="col">Eliminar</th>
 
@@ -35,10 +37,11 @@
 						<td scope="row"  th:text="${lp.titulo}"></td>
 						<td scope="row"  th:text="${lp.categoria}"></td>
 						<td  scope="row" th:text="${lp.descripcion}"></td>
+						<td scope="row"  th:text="${lp.mes}"></td>
 						<td scope="row"  th:text="${lp.fechagastos}"></td>
 						<td scope="row"  th:text="${lp.montoeuros}"></td>
-						<td><a class="btn btn-success btn-sm" th:href="@{/views/editg/} + ${lp.id}" th:text="'Editar Registro'"></td>
-						<td><a class="btn btn-danger btn-sm" th:href="@{/views/deleteg/} + ${lp.id}" th:text="'Eliminar Registro'" onclick="return confirm('Desea Eliminar Registro?')"></td>
+						<td><a class="btn btn-success btn-sm" th:href="@{/views/editg/} + ${lp.id}" th:text="'Editar Registro'" /></td>
+						<td><a class="btn btn-danger btn-sm" th:href="@{/views/deleteg/} + ${lp.id}" th:text="'Eliminar Registro'" onclick="return confirm('Desea Eliminar Registro?')" /></td>
 
 					</tr>
 					</tbody>

@@ -2,6 +2,7 @@ package com.web.service;
 
 import java.util.List;
 
+import com.web.model.MesesEnum;
 import org.web.entity.EGastos;
 
 import com.web.model.CategoriasProductosEnum;
@@ -15,6 +16,6 @@ public interface IExpensesServices {
 	public void guardar(EGastos e);
 	public   EGastos findPorID(Long id);
 	public void Eliminar(Long id);
-	List<GastosEnum>ListaGastosEnum(); 
-
+	List<GastosEnum>ListaGastosEnum();
+	List<MesesEnum>ListaMesesEnum();
 }

@@ -1,8 +1,11 @@
 package com.web.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.web.model.MesesEnum;
 import com.web.util.ConstantsUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,6 +35,7 @@ public class ExpensesController {
 	IExpensesServices service;
 	private static final Logger log = LoggerFactory.getLogger(ExpensesController.class);
 	ConstantsUtil constantsUtil = new ConstantsUtil();
+
 	@RequestMapping("listAllExpenses")
 	public String goToExpensesModule(Model model){
 		List<Gastos> allGastos = service.getAllGastos();
@@ -52,10 +56,12 @@ public class ExpensesController {
 	@GetMapping("newexpense")
 	public String goToFormNewExpense(Model model) {
 	    Gastos g = new Gastos();		 
-		List<GastosEnum> lc= service.ListaGastosEnum();		
+		List<GastosEnum> lc= service.ListaGastosEnum();
+		List<MesesEnum> lm = service.ListaMesesEnum();
 		model.addAttribute("titulo", "Formulario Nuevo Gasto");
 		model.addAttribute("gasto", g);
 		model.addAttribute("categorias", lc);
+		model.addAttribute("meses", lm);
 		return constantsUtil.FORMULARIO_NUEVO_GASTO;
 	}
 
@@ -76,13 +82,28 @@ public class ExpensesController {
 			return constantsUtil.FORMULARIO_NUEVO_GASTO;
 		}
 			GastosConverter converter = new GastosConverter();
-		 	log.info("SE INICIA PROCESO DE GUARDADO DEL NUEVO GASTO");
-			LocalDate pastDate = LocalDate.parse(g.getFechagastos().toString());
+		 	log.info("SE INICIA PROCESO DE GUARDADO DEL NUEVO GASTO " + g.getFechagastos().toString());
+			LocalDate pastDate = LocalDate.parse(g.getFechagastos().toString(), DateTimeFormatter.ISO_DATE);
 		log.info("PAESE FECHA"+pastDate);
+
 			service.guardar(converter.convertGasto(g));
 		messagesAtributte.addFlashAttribute("succes", "GASTO GUARDADO CON EXITO");
 		return constantsUtil.REDIRECT_LISTADO_GASTOS;
 	}
+
+	@GetMapping("/mes/{mes}")
+	public String getForMonth(@PathVariable("mes") String mes, Model model){
+		List<Gastos> allGastos = service.getAllGastos();
+		List<Gastos> gastosMes = allGastos.stream()
+						.filter(gastos -> mes.equals(gastos.getMes())).collect(Collectors.toList());
+
+		model.addAttribute("titulo", "Modulo de Gastos ");
+		model.addAttribute("listadegastos", gastosMes);
+
+		log.info("SE LISTARON LOS GASTOS");
+		return constantsUtil.VIEW_LISTADO_GASTOS;
+	}
+
 	@GetMapping("/editg/{id}")
 	public String editExpense(@PathVariable("id") Long id, Model model){
 		if(id>0){
